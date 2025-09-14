@@ -21,6 +21,9 @@ directions = [(0,1),(0,-1),(1,0),(-1,0)]  # right, left, down, up
 path = [tuple(robot_pos)]
 coverage_history = []  # % cleaned vs steps
 
+# Simulation params
+max_steps = 10000
+
 def step():
     """Perform one random movement step for the robot."""
     global robot_pos
@@ -62,14 +65,13 @@ def update(frame):
     ax2.set_ylabel("Coverage (%)")
     ax2.set_ylim(0, 100)
 
+    # Stop if coverage is 100%
+    if coverage >= 100:
+        ani.event_source.stop()
+
     return ax1, ax2
 
-ani = animation.FuncAnimation(fig, update, frames=500, interval=100, repeat=False)
+ani = animation.FuncAnimation(fig, update, frames=max_steps, interval=50, repeat=False)
 
 plt.tight_layout()
 plt.show()
-
-# --- Save as video (optional) ---
-# from matplotlib.animation import FFMpegWriter
-# writer = FFMpegWriter(fps=10, bitrate=1800)
-# ani.save("robot_vacuum_simulation.mp4", writer=writer)
